@@ -9,11 +9,11 @@
 GEO_CODING_API_KEY=bbbbbbbbbb-fwefwefwe_test
 ```
 
-## Input Spot Name list
+## Set Spot Name list
 
 - list.txt
 
-```
+```csv
 旭山動物園
 函館山
 小樽運河
@@ -29,11 +29,13 @@ GEO_CODING_API_KEY=bbbbbbbbbb-fwefwefwe_test
 
 ## Output LatLng Json
 
-```$xslt
-
 ```
 % go run main.go list.txt
 ```
+
+- spot.json
+
+```json
 [
     {
         "name": "旭山動物園",
