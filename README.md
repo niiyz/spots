@@ -1,9 +1,9 @@
 # spot
 
 
-## .env
+## Geocoding API Key
 
-- Geocoding API Key
+- .env
 
 ```
 GEO_CODING_API_KEY=bbbbbbbbbb-fwefwefwe_test
@@ -26,8 +26,13 @@ GEO_CODING_API_KEY=bbbbbbbbbb-fwefwefwe_test
 洞爺湖
 ```
 
+
 ## Output LatLng Json
 
+```$xslt
+
+```
+% go run main.go list.txt
 ```
 [
     {
