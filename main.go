@@ -14,13 +14,6 @@ import (
 	"os"
 )
 
-func EnvLoad() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
-
 type Spot struct {
 	Name    string  `json:"name"`
 	Address string  `json:"address"`
@@ -30,7 +23,7 @@ type Spot struct {
 
 func main() {
 
-	EnvLoad()
+	loadEnv()
 
 	c, err := maps.NewClient(maps.WithAPIKey(os.Getenv("GEO_CODING_API_KEY")))
 	if err != nil {
@@ -73,6 +66,13 @@ func main() {
 	}
 
 	writeFile("spot.json", toJson(spots))
+}
+
+func loadEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }
 
 func createGeocodingRequest(address string, language string) *maps.GeocodingRequest {
