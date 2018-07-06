@@ -29,12 +29,6 @@ type Spot struct {
 	Lng     float64 `json:"lng"`
 }
 
-func failOnError(err error) {
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
-}
-
 func main() {
 
 	EnvLoad()
@@ -47,7 +41,10 @@ func main() {
 	flag.Parse()
 
 	inputFile, err := os.Open(flag.Arg(0))
-	failOnError(err)
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+
 	defer inputFile.Close()
 	reader := csv.NewReader(inputFile)
 
@@ -58,7 +55,9 @@ func main() {
 		if err == io.EOF {
 			break
 		} else {
-			failOnError(err)
+			if err != nil {
+				log.Fatal("Error:", err)
+			}
 		}
 
 		var address = record[0]
