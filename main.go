@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"encoding/csv"
+	"encoding/json"
 	"flag"
+	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/kr/pretty"
 	"golang.org/x/net/context"
@@ -10,9 +13,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"bytes"
-	"encoding/json"
-	"fmt"
 )
 
 func EnvLoad() {
@@ -60,28 +60,42 @@ func main() {
 			}
 		}
 
-		var address = record[0]
+		var searchName = record[0]
 
-		r := &maps.GeocodingRequest{
-			Address:  address,
-			Language: "ja",
-		}
-		result, err := c.Geocode(context.Background(), r)
-		if err != nil {
-			log.Fatalf("fatal error: %s", err)
-		}
+		var r = createGeocodingRequest(searchName, "ja")
 
-		var lat = result[0].Geometry.Location.Lat
-		var lng = result[0].Geometry.Location.Lng
+		lat, lng, address, shortName := searchAddress(c, r)
 
-		spot := Spot{Name: address, Address: result[0].FormattedAddress, Lat: lat, Lng: lng}
+		spot := Spot{Name: searchName, Address: address, Lat: lat, Lng: lng}
 		spots = append(spots, spot)
 
-		pretty.Println(result[0].AddressComponents[0].ShortName, result[0].FormattedAddress, lat, lng)
+		pretty.Println(lat, lng, address, shortName)
 
 	}
 
 	writeFile("spot.json", toJson(spots))
+}
+
+func createGeocodingRequest(address string, language string) *maps.GeocodingRequest {
+	return &maps.GeocodingRequest{
+		Address:  address,
+		Language: language,
+	}
+}
+
+func searchAddress(client *maps.Client, request *maps.GeocodingRequest) (lat float64, lng float64, address string, shortName string) {
+
+	result, err := client.Geocode(context.Background(), request)
+	if err != nil {
+		log.Fatalf("fatal error: %s", err)
+	}
+
+	lat = result[0].Geometry.Location.Lat
+	lng = result[0].Geometry.Location.Lng
+	address = result[0].FormattedAddress
+	shortName = result[0].AddressComponents[0].ShortName
+
+	return lat, lng, address, shortName
 }
 
 func toJson(spots []Spot) []byte {
