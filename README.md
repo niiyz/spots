@@ -7,6 +7,7 @@
 
 ```
 GEO_CODING_API_KEY=bbbbbbbbbb-fwefwefwe_test
+GEO_CODING_LANGUAGE=ja
 ```
 
 ## Set Spot Name list

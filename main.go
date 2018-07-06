@@ -54,7 +54,7 @@ func main() {
 
 		var searchName = record[0]
 
-		var r = createGeocodingRequest(searchName, "ja")
+		var r = createGeocodingRequest(searchName, os.Getenv("GEO_CODING_LANGUAGE"))
 
 		lat, lng, address, shortName := searchAddress(c, r)
 
