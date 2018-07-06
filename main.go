@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"flag"
@@ -106,9 +105,6 @@ func toJson(spots []Spot) []byte {
 		fmt.Println(err.Error())
 		os.Exit(100)
 	}
-
-	var out bytes.Buffer
-	json.Indent(&out, b, "    ", "    ")
 
 	return b
 }
